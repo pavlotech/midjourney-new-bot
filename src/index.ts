@@ -5,7 +5,6 @@ import { IBotContext, ISceneContext } from "./context/context.interface";
 import { Command } from "./commands/command.class";
 import { Start } from "./commands/start.command";
 import { PrismaClient } from '@prisma/client'
-import { Mode } from "./commands/mode.command";
 import { Vip } from "./commands/vip.command";
 import { Profile } from "./commands/profile.command";
 import { Photo } from "./commands/photo.command";
@@ -51,7 +50,6 @@ export class Bot {
   init () {
     this.commands = [
       new Start(this.bot, this.config),
-      new Mode(this.bot),
       new Vip(this.bot, this.config),
       new Profile(this.bot),
       new Photo(this.bot, this.config),
@@ -72,18 +70,6 @@ export class Bot {
       {
         command: 'my_profile',
         description: 'Мой профиль'
-      },
-      {
-        command: 'mode_rem_background',
-        description: 'Удаление фона'
-      },
-      {
-        command: 'mode_rem_text',
-        description: 'Удаление вод. знаков (текст)'
-      },
-      {
-        command: 'mode_rem_logo',
-        description: 'Удаление вод. знаков (лого)'
       }
     ])
     this.bot.launch()
