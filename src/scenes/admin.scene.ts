@@ -560,7 +560,7 @@ export class Scene {
 *ID:* \`${user.userId}\`
 *Дата регистрации: ${new Date(Number(user.registry)).toLocaleDateString()}
 Использований: ${user.subscribe}
-Режим: ${user.mode === 'rem_background' ? 'Удаление фона' : user.mode === 'rem_text' ? 'Удаление текста' : user.mode === 'rem_logo' ? 'Удаление логотипа' : ''}
+Последний запрос: ${user.last}
 Последний платеж: ${user.lastPay === 0 ? 'Пусто' : new Date(Number(user.lastPay)).toLocaleDateString()}
 Админ: ${user.admin ? 'Да' : 'Нет'}
 Забанен: ${user.ban ? 'Да' : 'Нет'}

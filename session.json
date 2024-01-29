@@ -3,7 +3,108 @@
     {
       "id": "1957655077:1957655077",
       "data": {
-        "__scenes": {}
+        "__scenes": {},
+        "Imagine": {
+          "id": "1201500614501343363",
+          "flags": 0,
+          "content": "**cat** - <@1093132196581216257> (fast)",
+          "hash": "b6946092-0808-40ea-871c-9128336f08d2",
+          "progress": "done",
+          "uri": "https://cdn.discordapp.com/attachments/1100419160799981741/1201500613964468274/Kolersky_cat_b6946092-0808-40ea-871c-9128336f08d2.png?ex=65ca0ba5&is=65b796a5&hm=524c79ee02a242ed970c87e34f1908b1ef4b36b0b2d83cbd5362cbdd08c1598c&",
+          "proxy_url": "https://media.discordapp.net/attachments/1100419160799981741/1201500613964468274/Kolersky_cat_b6946092-0808-40ea-871c-9128336f08d2.png?ex=65ca0ba5&is=65b796a5&hm=524c79ee02a242ed970c87e34f1908b1ef4b36b0b2d83cbd5362cbdd08c1598c&"
+        },
+        "prompt": "cat",
+        "Upscale": {
+          "id": "1201302155886329906",
+          "flags": 0,
+          "content": "**Dasha** - Image #1 <@1093132196581216257>",
+          "hash": "0f328dbf-31cb-4e29-96b9-53e62d663d5f",
+          "progress": "done",
+          "uri": "https://cdn.discordapp.com/attachments/1100419160799981741/1201302155655659590/Kolersky_Dasha_0f328dbf-31cb-4e29-96b9-53e62d663d5f.png?ex=65c952d1&is=65b6ddd1&hm=1a62b2d572115b42ef011f2c5cb227abcd36c7ea1225181bc853cbc31769a8d3&",
+          "proxy_url": "https://media.discordapp.net/attachments/1100419160799981741/1201302155655659590/Kolersky_Dasha_0f328dbf-31cb-4e29-96b9-53e62d663d5f.png?ex=65c952d1&is=65b6ddd1&hm=1a62b2d572115b42ef011f2c5cb227abcd36c7ea1225181bc853cbc31769a8d3&",
+          "options": [
+            {
+              "type": 2,
+              "style": 2,
+              "label": "Upscale (2x)",
+              "custom": "MJ::JOB::upsample_v5_2x::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+            },
+            {
+              "type": 2,
+              "style": 2,
+              "label": "Upscale (4x)",
+              "custom": "MJ::JOB::upsample_v5_4x::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+            },
+            {
+              "type": 2,
+              "style": 2,
+              "label": "Vary (Subtle)",
+              "custom": "MJ::JOB::low_variation::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+            },
+            {
+              "type": 2,
+              "style": 2,
+              "label": "Vary (Strong)",
+              "custom": "MJ::JOB::high_variation::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+            },
+            {
+              "type": 2,
+              "style": 2,
+              "label": "Vary (Region)",
+              "custom": "MJ::Inpaint::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+            },
+            {
+              "type": 2,
+              "style": 2,
+              "label": "Zoom Out 2x",
+              "custom": "MJ::Outpaint::50::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+            },
+            {
+              "type": 2,
+              "style": 2,
+              "label": "Zoom Out 1.5x",
+              "custom": "MJ::Outpaint::75::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+            },
+            {
+              "type": 2,
+              "style": 2,
+              "label": "Custom Zoom",
+              "custom": "MJ::CustomZoom::0f328dbf-31cb-4e29-96b9-53e62d663d5f"
+            },
+            {
+              "type": 2,
+              "style": 2,
+              "label": "⬅️",
+              "custom": "MJ::JOB::pan_left::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+            },
+            {
+              "type": 2,
+              "style": 2,
+              "label": "➡️",
+              "custom": "MJ::JOB::pan_right::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+            },
+            {
+              "type": 2,
+              "style": 2,
+              "label": "⬆️",
+              "custom": "MJ::JOB::pan_up::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+            },
+            {
+              "type": 2,
+              "style": 2,
+              "label": "⬇️",
+              "custom": "MJ::JOB::pan_down::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+            },
+            {
+              "type": 2,
+              "style": 2,
+              "label": "❤️",
+              "custom": "MJ::BOOKMARK::0f328dbf-31cb-4e29-96b9-53e62d663d5f"
+            }
+          ],
+          "width": 1024,
+          "height": 1024
+        }
       }
     }
   ]

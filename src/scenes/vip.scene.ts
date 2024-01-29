@@ -67,14 +67,14 @@ export class VipScene {
     
         this.tinkoff.createInvoice({
           Amount: Amount,
-          OrderId: `px_01_${numPay}_${ctx.from?.id}`,
+          OrderId: `mj_01_${numPay}_${ctx.from?.id}`,
           Description: "VIP-подписка PixelBin-бот.",
         }, {
           Email: email,
           Taxation: "usn_income",
           Items: [
             {
-              Name: `pxoj${this.priceVIP}`,
+              Name: `mjoj${this.priceVIP}`,
               Quantity: 1,
               Price: Amount,
               Amount: Amount,

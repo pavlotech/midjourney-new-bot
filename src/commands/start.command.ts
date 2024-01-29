@@ -16,7 +16,7 @@ export class Start extends Command {
             userId: String(ctx.from.id),
             registry: `${Date.now()}`,
             subscribe: 0,
-            lastWord: '',
+            last: '',
             lastPay: '0',
             admin: false,
             ban: false,

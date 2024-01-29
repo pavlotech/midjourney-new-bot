@@ -4,7 +4,7 @@ CREATE TABLE "User" (
     "userId" TEXT NOT NULL,
     "registry" TEXT NOT NULL,
     "subscribe" INTEGER NOT NULL,
-    "mode" TEXT NOT NULL,
+    "last" TEXT NOT NULL,
     "lastPay" TEXT NOT NULL,
     "admin" BOOLEAN NOT NULL,
     "ban" BOOLEAN NOT NULL,

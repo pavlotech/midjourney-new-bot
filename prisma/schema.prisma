@@ -12,7 +12,7 @@ model User {
   userId    String @unique
   registry  String
   subscribe Int
-  lastWord  String
+  last      String
   lastPay   String
   admin     Boolean
   ban       Boolean

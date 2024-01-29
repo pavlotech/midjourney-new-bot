@@ -11,9 +11,9 @@ import { Photo } from "./commands/photo.command";
 import { Logger } from "./types/logger.class";
 import { Database } from "./types/database.class";
 import { Admin } from "./commands/admin.command";
-import { Scene } from "./types/scene.class";
+import { Scene } from "./scenes/admin.scene";
 import { Post } from "./commands/post.command";
-import { VipScene } from "./commands/vip.scene";
+import { VipScene } from "./scenes/vip.scene";
 import LocalSession from "telegraf-session-local";
 
 export class Bot {
@@ -43,8 +43,8 @@ export class Bot {
       scene.take_away_requests_cb(),
       vip.get_email()
     ], { ttl: 10 * 60 * 1000 });
-    this.bot.use(session())
-    //this.bot.use(new LocalSession({ database: 'session.json'}))
+    //this.bot.use(session())
+    this.bot.use(new LocalSession({ database: 'session.json' }))
     this.bot.use(stage.middleware());  
   }
   init () {

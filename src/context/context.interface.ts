@@ -3,9 +3,10 @@ import internal from "stream";
 import { Context, Scenes } from "telegraf";
 
 export interface SessionData {
-  editMessageId: number;
-  paymentId: string;
-  paymentStatus: boolean;
+  prompt: string;
+  Imagine: any;
+  Upscale: any;
+  Custom: any;
 };
 export interface SceneData {
 
