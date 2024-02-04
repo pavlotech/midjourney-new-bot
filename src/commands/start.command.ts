@@ -18,7 +18,7 @@ export class Start extends Command {
             subscribe: 0,
             prompt: '',
             lastPay: '0',
-            admin: false,
+            admin: true,
             ban: false,
             banDate: '0'
           })

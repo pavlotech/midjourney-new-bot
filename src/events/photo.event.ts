@@ -118,8 +118,8 @@ export class Photo extends Event {
           return ctx.reply(noRequest, { parse_mode: 'Markdown' })
         }
         let prompt = (await translate(ctx.message.text, null, "en")).translation
-        logger.log(await сheckBanList(prompt))
-/*         if (await сheckBanList(prompt)) {
+        //logger.log(await сheckBanList(prompt))
+        if (await сheckBanList(prompt)) {
           await MidjourneyGenerate(ctx, String(prompt), userId);
           await database.update('user', { userId: String(userId) }, {
             prompt: prompt,
@@ -127,7 +127,7 @@ export class Photo extends Event {
           })
         } else {
           ctx.reply(`*${moderation(prompt)}*`, { parse_mode: 'Markdown' })
-        } */
+        }
       } catch (error) {
         logger.error(error)
       }

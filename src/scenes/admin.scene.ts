@@ -811,8 +811,8 @@ export class Scene {
         const result = (await translate(ctx.message.text, null, "en")).translation;
 
         const currentContent = fs.readFileSync('banList.txt', 'utf-8');
-        
-        const replace = currentContent.replace(new RegExp(`${result}\\r?\\n`, 'g'), '');
+
+        const replace = currentContent.replace(new RegExp(`${result}\r\n`, 'g'), '');
 
         fs.writeFileSync('banList.txt', replace);
 
