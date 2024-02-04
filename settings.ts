@@ -1,17 +1,12 @@
 export const start = {
   firstMessage: `
-Вы подписались на Kolersky_Photo_Bot!  
+Вы подписались на KolerskyMidjorneyBot!
 
-Он качественно удаляет фона или водяные знаки с фото с помощью нейросетей.  
-Подпишитесь на канал, чтобы всегда иметь актуальную информацию: @kolerskych.  
-Там же обсуждение и вопросы.  
+Он генерирует изображения с помощью нейросети Midjorney. Одной из лучших на данный момент.
+Подпишитесь на канал, чтобы всегда иметь актуальную информацию: @kolerskych. Там же обсуждение и вопросы.
   
-- удаление фона с изображений;  
-- удаление водяных знаков;  
-- одиночные и множественные запросы;  
-  
-[Инструкция и примеры](https://kolersky.com/photo)  
-Для работы с нейросетью отравьте фото боту
+[Инструкция](https://kolersky.com/mj)
+Чтобы сгенерировать фото, просто напишите свой запрос боту.
   `,
   secondMessage: `
 *Для использования нейросети оплатите доступ.
@@ -70,7 +65,9 @@ export const buttonsCustom = [
     { text: 'Upscale (4x)', callback_data: 'Upscale (4x)' },
   ],
   [
+    //{ text: 'Vary (Subtle)', callback_data: 'Vary (Subtle)' },
     { text: 'Vary (Strong)', callback_data: 'Vary (Strong)' },
+    //{ text: 'Vary (Region)', callback_data: 'Vary (Region)' },
   ],
   [
     { text: 'Zoom Out 2x', callback_data: 'Zoom Out 2x' },

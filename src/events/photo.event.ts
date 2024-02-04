@@ -22,10 +22,11 @@ export class Photo extends Event {
       //Debug: true,
       Ws: true,
     });
-    client.init();
+    
     
     async function MidjourneyGenerate (ctx: IBotContext, prompt: string, userId: number) {
       try {
+        client.init();
         const initialMessage = await ctx.replyWithPhoto(
           { source: 'background.png' },
           { caption: '*Пожалуйста подождите*', parse_mode: 'Markdown' }
@@ -57,13 +58,15 @@ export class Photo extends Event {
               inline_keyboard: buttonsGenerate
             }
           }
-        );  
+        );
+        client.Close();
       } catch (error) {
         logger.error(error);
       }
     }
     async function MidjourneyCustom (ctx: IBotContext, userId: number, label: string, prompt: string) {
       try {
+        client.init();
         const customId = findCustomByLabel(ctx.session.data.options, label)
         let modifiedPrompt = ['Custom Zoom', 'Vary (Strong)'].includes(label)
         ? `${prompt} --zoom 2` : prompt;
@@ -100,13 +103,14 @@ export class Photo extends Event {
           ctx.session.data = result
           await finalyMessage(ctx, String(result?.proxy_url), userId, initialMessage.message_id, label, logger)
         }
+        client.Close();
       } catch (error) {
         logger.error(error)
       }
     }
     async function сheckBanList (word: string) {
       const bannedWords = fs.readFileSync('banList.txt', 'utf-8').split('\r\n');
-      logger.log(bannedWords)
+      //logger.log(bannedWords)
       return bannedWords.includes(`${word.toLowerCase()}`);
     }
     this.bot.on('text', async (ctx) => {
@@ -120,13 +124,13 @@ export class Photo extends Event {
         let prompt = (await translate(ctx.message.text, null, "en")).translation
         //logger.log(await сheckBanList(prompt))
         if (await сheckBanList(prompt)) {
+          ctx.reply(`*${moderation(prompt)}*`, { parse_mode: 'Markdown' })
+        } else {
           await MidjourneyGenerate(ctx, String(prompt), userId);
           await database.update('user', { userId: String(userId) }, {
             prompt: prompt,
             subscribe: user.subscribe - 1
           })
-        } else {
-          ctx.reply(`*${moderation(prompt)}*`, { parse_mode: 'Markdown' })
         }
       } catch (error) {
         logger.error(error)
