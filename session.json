@@ -4,102 +4,92 @@
       "id": "1957655077:1957655077",
       "data": {
         "__scenes": {},
-        "Imagine": {
-          "id": "1201500614501343363",
+        "data": {
+          "id": "1203726610403164171",
           "flags": 0,
-          "content": "**cat** - <@1093132196581216257> (fast)",
-          "hash": "b6946092-0808-40ea-871c-9128336f08d2",
+          "content": "**cat** - Image #2 <@1093132196581216257>",
+          "hash": "d606516e-675a-49a2-96c5-089e48332aeb",
           "progress": "done",
-          "uri": "https://cdn.discordapp.com/attachments/1100419160799981741/1201500613964468274/Kolersky_cat_b6946092-0808-40ea-871c-9128336f08d2.png?ex=65ca0ba5&is=65b796a5&hm=524c79ee02a242ed970c87e34f1908b1ef4b36b0b2d83cbd5362cbdd08c1598c&",
-          "proxy_url": "https://media.discordapp.net/attachments/1100419160799981741/1201500613964468274/Kolersky_cat_b6946092-0808-40ea-871c-9128336f08d2.png?ex=65ca0ba5&is=65b796a5&hm=524c79ee02a242ed970c87e34f1908b1ef4b36b0b2d83cbd5362cbdd08c1598c&"
-        },
-        "prompt": "cat",
-        "Upscale": {
-          "id": "1201302155886329906",
-          "flags": 0,
-          "content": "**Dasha** - Image #1 <@1093132196581216257>",
-          "hash": "0f328dbf-31cb-4e29-96b9-53e62d663d5f",
-          "progress": "done",
-          "uri": "https://cdn.discordapp.com/attachments/1100419160799981741/1201302155655659590/Kolersky_Dasha_0f328dbf-31cb-4e29-96b9-53e62d663d5f.png?ex=65c952d1&is=65b6ddd1&hm=1a62b2d572115b42ef011f2c5cb227abcd36c7ea1225181bc853cbc31769a8d3&",
-          "proxy_url": "https://media.discordapp.net/attachments/1100419160799981741/1201302155655659590/Kolersky_Dasha_0f328dbf-31cb-4e29-96b9-53e62d663d5f.png?ex=65c952d1&is=65b6ddd1&hm=1a62b2d572115b42ef011f2c5cb227abcd36c7ea1225181bc853cbc31769a8d3&",
+          "uri": "https://cdn.discordapp.com/attachments/1100419160799981741/1203726610381934672/Kolersky_cat_d606516e-675a-49a2-96c5-089e48332aeb.png?ex=65d224c4&is=65bfafc4&hm=3e55e09449ffbd3422a6a5515fd5c7ae6e860488f7d6778ce6cbeace991e1f7b&",
+          "proxy_url": "https://media.discordapp.net/attachments/1100419160799981741/1203726610381934672/Kolersky_cat_d606516e-675a-49a2-96c5-089e48332aeb.png?ex=65d224c4&is=65bfafc4&hm=3e55e09449ffbd3422a6a5515fd5c7ae6e860488f7d6778ce6cbeace991e1f7b&",
           "options": [
             {
               "type": 2,
               "style": 2,
               "label": "Upscale (2x)",
-              "custom": "MJ::JOB::upsample_v5_2x::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+              "custom": "MJ::JOB::upsample_v5_2x::1::d606516e-675a-49a2-96c5-089e48332aeb::SOLO"
             },
             {
               "type": 2,
               "style": 2,
               "label": "Upscale (4x)",
-              "custom": "MJ::JOB::upsample_v5_4x::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+              "custom": "MJ::JOB::upsample_v5_4x::1::d606516e-675a-49a2-96c5-089e48332aeb::SOLO"
             },
             {
               "type": 2,
               "style": 2,
               "label": "Vary (Subtle)",
-              "custom": "MJ::JOB::low_variation::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+              "custom": "MJ::JOB::low_variation::1::d606516e-675a-49a2-96c5-089e48332aeb::SOLO"
             },
             {
               "type": 2,
               "style": 2,
               "label": "Vary (Strong)",
-              "custom": "MJ::JOB::high_variation::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+              "custom": "MJ::JOB::high_variation::1::d606516e-675a-49a2-96c5-089e48332aeb::SOLO"
             },
             {
               "type": 2,
               "style": 2,
               "label": "Vary (Region)",
-              "custom": "MJ::Inpaint::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+              "custom": "MJ::Inpaint::1::d606516e-675a-49a2-96c5-089e48332aeb::SOLO"
             },
             {
               "type": 2,
               "style": 2,
               "label": "Zoom Out 2x",
-              "custom": "MJ::Outpaint::50::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+              "custom": "MJ::Outpaint::50::1::d606516e-675a-49a2-96c5-089e48332aeb::SOLO"
             },
             {
               "type": 2,
               "style": 2,
               "label": "Zoom Out 1.5x",
-              "custom": "MJ::Outpaint::75::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+              "custom": "MJ::Outpaint::75::1::d606516e-675a-49a2-96c5-089e48332aeb::SOLO"
             },
             {
               "type": 2,
               "style": 2,
               "label": "Custom Zoom",
-              "custom": "MJ::CustomZoom::0f328dbf-31cb-4e29-96b9-53e62d663d5f"
+              "custom": "MJ::CustomZoom::d606516e-675a-49a2-96c5-089e48332aeb"
             },
             {
               "type": 2,
               "style": 2,
               "label": "⬅️",
-              "custom": "MJ::JOB::pan_left::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+              "custom": "MJ::JOB::pan_left::1::d606516e-675a-49a2-96c5-089e48332aeb::SOLO"
             },
             {
               "type": 2,
               "style": 2,
               "label": "➡️",
-              "custom": "MJ::JOB::pan_right::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+              "custom": "MJ::JOB::pan_right::1::d606516e-675a-49a2-96c5-089e48332aeb::SOLO"
             },
             {
               "type": 2,
               "style": 2,
               "label": "⬆️",
-              "custom": "MJ::JOB::pan_up::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+              "custom": "MJ::JOB::pan_up::1::d606516e-675a-49a2-96c5-089e48332aeb::SOLO"
             },
             {
               "type": 2,
               "style": 2,
               "label": "⬇️",
-              "custom": "MJ::JOB::pan_down::1::0f328dbf-31cb-4e29-96b9-53e62d663d5f::SOLO"
+              "custom": "MJ::JOB::pan_down::1::d606516e-675a-49a2-96c5-089e48332aeb::SOLO"
             },
             {
               "type": 2,
               "style": 2,
               "label": "❤️",
-              "custom": "MJ::BOOKMARK::0f328dbf-31cb-4e29-96b9-53e62d663d5f"
+              "custom": "MJ::BOOKMARK::d606516e-675a-49a2-96c5-089e48332aeb"
             }
           ],
           "width": 1024,

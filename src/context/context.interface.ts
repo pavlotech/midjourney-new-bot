@@ -3,10 +3,7 @@ import internal from "stream";
 import { Context, Scenes } from "telegraf";
 
 export interface SessionData {
-  prompt: string;
-  Imagine: any;
-  Upscale: any;
-  Custom: any;
+  data: any;
 };
 export interface SceneData {
 

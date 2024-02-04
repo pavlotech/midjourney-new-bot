@@ -7,7 +7,7 @@ import { Start } from "./commands/start.command";
 import { PrismaClient } from '@prisma/client'
 import { Vip } from "./commands/vip.command";
 import { Profile } from "./commands/profile.command";
-import { Photo } from "./commands/photo.command";
+import { Photo } from "./events/photo.event";
 import { Logger } from "./types/logger.class";
 import { Database } from "./types/database.class";
 import { Admin } from "./commands/admin.command";
@@ -22,6 +22,7 @@ export class Bot {
   logger: any = new Logger();
   database: any = new Database(this.prisma, this.logger);
   commands: Command[] = [];
+  events: Command[] = [];
   
   constructor (private readonly config: IConfigService) {
     this.bot = new Telegraf<IBotContext>(this.config.get('TOKEN'), { handlerTimeout: 60 * 60 * 1000 })
@@ -41,6 +42,8 @@ export class Bot {
       scene.take_away_requests(),
       scene.give_requests_cb(),
       scene.take_away_requests_cb(),
+      scene.add_word(),
+      scene.remove_word(),
       vip.get_email()
     ], { ttl: 10 * 60 * 1000 });
     //this.bot.use(session())
@@ -52,11 +55,16 @@ export class Bot {
       new Start(this.bot, this.config),
       new Vip(this.bot, this.config),
       new Profile(this.bot),
-      new Photo(this.bot, this.config),
+
       new Post(this.bot),
       new Admin(this.bot)
     ]
     for (const command of this.commands) command.handle(this.logger, this.database);
+
+    this.events = [
+      new Photo(this.bot, this.config),
+    ]
+    for (const event of this.events) event.handle(this.logger, this.database);
 
     this.bot.telegram.setMyCommands([
       {

@@ -45,8 +45,9 @@ export const admin = {
   text: `*Права администратора*`,
   button: `Получить`
 }
+export const noRequest = `У вас закончились запросы.\nКупить еще 30 - /vip`
 
-export const buttonsImagine = [
+export const buttonsGenerate = [
   [
     { text: 'U1', callback_data: 'U1' },
     { text: 'U2', callback_data: 'U2' },
@@ -67,27 +68,52 @@ export const buttonsCustom = [
   [
     { text: 'Upscale (2x)', callback_data: 'Upscale (2x)' },
     { text: 'Upscale (4x)', callback_data: 'Upscale (4x)' },
-    { text: 'Vary (Subtle)', callback_data: 'Vary (Subtle)' },
+  ],
+  [
     { text: 'Vary (Strong)', callback_data: 'Vary (Strong)' },
   ],
   [
-    { text: 'Vary (Region)', callback_data: 'Vary (Region)' },
     { text: 'Zoom Out 2x', callback_data: 'Zoom Out 2x' },
     { text: 'Zoom Out 1.5x', callback_data: 'Zoom Out 1.5x' },
-    { text: 'Custom Zoom', callback_data: 'Custom Zoom' }
-  ],
-  [
-    { text: '⬅️', callback_data: '⬅️' },
-    { text: '➡️', callback_data: '➡️' },
-    { text: '⬆️', callback_data: '⬆️' },
-    { text: '⬇️', callback_data: '⬇️' }
+    { text: 'Custom Zoom', callback_data: 'Custom Zoom' },
   ],
 ];
 export const labels = [
   'U1', 'U2', 'U3', 'U4',
   'V1', 'V2', 'V3', 'V4',
   '🔄',
-  'Upscale (2x)', 'Upscale (4x)', 'Vary (Subtle)', 'Vary (Strong)',
-  'Vary (Region)', 'Zoom Out 2x', 'Zoom Out 1.5x', 'Custom Zoom',
+  'Upscale (2x)', 'Upscale (4x)',
+  'Vary (Subtle)', 'Vary (Strong)', 'Vary (Region)',
+  'Zoom Out 2x', 'Zoom Out 1.5x', 'Custom Zoom',
   '⬅️', '➡️', '⬆️', '⬇️',
 ];
+
+export const buttonArray = [
+  [{ text: `Создать обьявление`, callback_data: 'create_announcement' }],
+  [{ text: `Удалить обьявление`, callback_data: 'remove_announcement' }],
+  [{ text: `Выдать права`, callback_data: 'add_admin' }],
+  [{ text: `Удалить права`, callback_data: 'remove_admin' }],
+  [{ text: `Забанить`, callback_data: 'ban_user' }],
+  [{ text: `Разбанить`, callback_data: 'unban_user' }],
+  [{ text: `Профиль пользователя`, callback_data: 'profile_user' }],
+  [{ text: `Выдать запросы`, callback_data: 'give_requests' }],
+  [{ text: `Забрать запросы`, callback_data: 'take_away_requests' }],
+  [{ text: `Добавить слово`, callback_data: 'add_word' }],
+  [{ text: `Удалить слово`, callback_data: 'remove_word' }]
+]
+export const buttons = [
+  'create_announcement',
+  'remove_announcement',
+  'remove_admin',
+  'ban_user',
+  'unban_user', 
+  'profile_user', 
+  'give_requests', 
+  'take_away_requests',
+  'add_word',
+  'remove_word'
+]
+
+export function moderation (prompt: string) {
+  return `Запрос ${prompt} не прошел модерацию`;
+}

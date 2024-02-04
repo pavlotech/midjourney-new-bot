@@ -1,5 +1,7 @@
-import { Scenes } from "telegraf"
-import { ISceneContext } from "../context/context.interface"
+import { Scenes } from "telegraf";
+import { ISceneContext } from "../context/context.interface";
+import { translate } from 'bing-translate-api';
+import * as fs from 'fs';
 
 export class Scene {
   private dataId: Map<string, string> = new Map<string, string>();
@@ -709,7 +711,7 @@ export class Scene {
       ctx.reply(`*Введите количество*`, {
         reply_markup: {
           inline_keyboard: [
-            [{ text: `Отменить`, callback_data: 'cancel'}],
+            [{ text: `Отменить`, callback_data: 'cancel' }],
           ]
         },
         parse_mode: 'Markdown'
@@ -717,7 +719,7 @@ export class Scene {
     })
     scene.action('cancel', async (ctx) => {
       try {
-        ctx.reply(`*Отменено*`, { parse_mode: 'Markdown'})
+        ctx.reply(`*Отменено*`, { parse_mode: 'Markdown' })
         ctx.scene.leave()
       } catch (error) {
         this.logger.error(error)
@@ -741,6 +743,81 @@ export class Scene {
           ctx.reply(this.notNumber, { parse_mode: 'Markdown' })
           ctx.scene.reenter()
         }
+      } catch (error) {
+        this.logger.error(error)
+        ctx.scene.leave()
+      }
+    })
+    return scene
+  }
+  public add_word () {
+    const scene = new Scenes.BaseScene<ISceneContext>('add_word')
+    scene.enter(async (ctx) => {
+      ctx.reply(`*Введите слово*`, {
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: `Отменить`, callback_data: 'cancel' }],
+          ]
+        },
+        parse_mode: 'Markdown'
+      })
+    })
+    scene.action('cancel', async (ctx) => {
+      try {
+        ctx.reply(`*Отменено*`, { parse_mode: 'Markdown'})
+        ctx.scene.leave()
+      } catch (error) {
+        this.logger.error(error)
+        ctx.scene.leave()
+      }
+    })
+    scene.on('text', async (ctx) => {
+      try {
+        const result = (await translate(ctx.message.text, null, "en")).translation;
+        fs.appendFile('banList.txt', `${result}\r\n`, () => {});
+
+        ctx.reply(`*Слово ${result} добавлено*`, { parse_mode: 'Markdown' })
+        ctx.scene.leave()
+      } catch (error) {
+        this.logger.error(error)
+        ctx.scene.leave()
+      }
+    })
+    return scene
+  }
+  public remove_word () {
+    const scene = new Scenes.BaseScene<ISceneContext>('remove_word')
+    scene.enter(async (ctx) => {
+      ctx.reply(`*Введите слово*`, {
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: `Отменить`, callback_data: 'cancel' }],
+          ]
+        },
+        parse_mode: 'Markdown'
+      })
+    })
+    scene.action('cancel', async (ctx) => {
+      try {
+        ctx.reply(`*Отменено*`, { parse_mode: 'Markdown'})
+        ctx.scene.leave()
+      } catch (error) {
+        this.logger.error(error)
+        ctx.scene.leave()
+      }
+    })
+    scene.on('text', async (ctx) => {
+      try {
+        const result = (await translate(ctx.message.text, null, "en")).translation;
+
+        const currentContent = fs.readFileSync('banList.txt', 'utf-8');
+        
+        const replace = currentContent.replace(new RegExp(`${result}\\r?\\n`, 'g'), '');
+
+        fs.writeFileSync('banList.txt', replace);
+
+        ctx.reply(`*Слово ${result} удалено*`, { parse_mode: 'Markdown' })
+        ctx.scene.leave()
       } catch (error) {
         this.logger.error(error)
         ctx.scene.leave()

@@ -14,9 +14,9 @@ export class Start extends Command {
         async function createUser () {
           await database.create('user', {
             userId: String(ctx.from.id),
-            registry: `${Date.now()}`,
+            registry: String(Date.now()),
             subscribe: 0,
-            last: '',
+            prompt: '',
             lastPay: '0',
             admin: false,
             ban: false,
