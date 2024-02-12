@@ -30,7 +30,8 @@ export const vip = {
   `,
   paymentCheck: `
 *Обработка оплаты...*
-  `
+  `,
+  invoiceName: `Доступ к сервису Midjourney`
 }
 export const mode = {
   rem_background: `*Режим изменен на удаление фона*`,

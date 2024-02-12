@@ -71,7 +71,7 @@ export class VipScene {
           Taxation: "usn_income",
           Items: [
             {
-              Name: `Доступ к сервису Midjourney`,
+              Name: vip.invoiceName,
               Quantity: 1,
               Price: Amount,
               Amount: Amount,
