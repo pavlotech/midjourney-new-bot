@@ -9,14 +9,22 @@ datasource db {
 
 model User {
   id        String @id @default(uuid()) @unique
-  userId    String @unique
-  registry  String
+  userId    BigInt @unique
+  registry  BigInt
   subscribe Int
   prompt    String
-  lastPay   String
+  ratio     String
+  lastPay   BigInt
   admin     Boolean
+  treatment Boolean
   ban       Boolean
-  banDate   String
+  banDate   BigInt
+}
+
+model Task {
+  task_id   String @unique
+  userId    BigInt 
+  date      BigInt
 }
 
 model Password {

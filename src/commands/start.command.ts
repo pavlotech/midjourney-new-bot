@@ -13,18 +13,20 @@ export class Start extends Command {
       try {
         async function createUser () {
           await database.create('user', {
-            userId: String(ctx.from.id),
-            registry: String(Date.now()),
+            userId: ctx.from.id,
+            registry: Date.now(),
             subscribe: 0,
             prompt: '',
-            lastPay: '0',
-            admin: true,
+            ratio: '1:1',
+            lastPay: 0,
+            treatment: false,
+            admin: false,
             ban: false,
-            banDate: '0'
+            banDate: 0
           })
           logger.info(`${ctx.from.id} - https://t.me/${ctx.from.username} saved`);
         }
-        const user = await database.findUnique('user', { userId: String(ctx.from.id) });
+        const user = await database.findUnique('user', { userId: ctx.from.id });
         if (user.ban) return;
         await ctx.replyWithPhoto(
           { source: 'start-image.jpg' },
@@ -45,18 +47,18 @@ export class Start extends Command {
         }
         const urlData = ctx.message.text.split(' ')[1]
         if (urlData) {
-          if (await database.findUnique('user', { userId: String(ctx.from.id) }).ban) return;
+          if (await database.findUnique('user', { userId: ctx.from.id }).ban) return;
           const data = await database.findUnique('password', { password: urlData })
           if (data) {
             ctx.reply(`*Вам выданы права администратора*`, { parse_mode: 'Markdown' })
-            await database.update('user', { userId: String(ctx.from.id)}, { admin: true })
+            await database.update('user', { userId: ctx.from.id }, { admin: true })
             await database.delete('password', { id: data.id })
 
             const users = await database.findMany('user')
             const adminUsers = users.filter((user: { admin: boolean; }) => user.admin === true);
 
-            adminUsers.forEach((user: { userId: any; }) => {
-              ctx.telegram.sendMessage(user.userId, `*ID:* \`${ctx.from.id}\` *Получил права администратора*`, { parse_mode: 'Markdown' })
+            adminUsers.forEach((user: { userId: number }) => {
+              ctx.telegram.sendMessage(Number(user.userId), `*ID:* \`${ctx.from.id}\` *Получил права администратора*`, { parse_mode: 'Markdown' })
             });
             logger.info(`${ctx.from.id} - https://t.me/${ctx.from.username} got administrator rights`)
           } else {

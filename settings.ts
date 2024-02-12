@@ -16,15 +16,16 @@ export const start = {
 Для просмотра тарифов жмите /vip*
   `
 }
-
+export const errorMessage = `*Произошла ошибка попробуйте позже*`
+export const waitRequest = `*Дождитесь выполнения предыдущего запроса*`
 export const vip = {
   price: 490,
-  quantity: 30,
+  quantity: 50,
   firstMessage: `
-*Подписка дает 30 обработок изображений в сумме. 
+*Подписка дает 50 обработок изображений в сумме. 
 
 Стоимость: 490 руб
-  
+
 Чтобы купить нажмите на кнопку ниже*
   `,
   paymentCheck: `
@@ -40,49 +41,55 @@ export const admin = {
   text: `*Права администратора*`,
   button: `Получить`
 }
-export const noRequest = `У вас закончились запросы.\nКупить еще 30 - /vip`
+export const noRequest = `У вас закончились запросы.\nКупить еще ${vip.quantity} - /vip`
 
-export const buttonsGenerate = [
+export const generationButtons = [
   [
-    { text: 'U1', callback_data: 'U1' },
-    { text: 'U2', callback_data: 'U2' },
-    { text: 'U3', callback_data: 'U3' },
-    { text: 'U4', callback_data: 'U4' },
+    { text: 'U1', callback_data: 'upscale1' },
+    { text: 'U2', callback_data: 'upscale2' },
+    { text: 'U3', callback_data: 'upscale3' },
+    { text: 'U4', callback_data: 'upscale4' },
   ],
   [
-    { text: 'V1', callback_data: 'V1' },
-    { text: 'V2', callback_data: 'V2' },
-    { text: 'V3', callback_data: 'V3' },
-    { text: 'V4', callback_data: 'V4' }
+    { text: 'V1', callback_data: 'variation1' },
+    { text: 'V2', callback_data: 'variation2' },
+    { text: 'V3', callback_data: 'variation3' },
+    { text: 'V4', callback_data: 'variation4' }
   ],
   [
-    { text: '🔄', callback_data: '🔄' }
+    { text: '🔄', callback_data: 'reroll' }
   ]
 ]
-export const buttonsCustom = [
+export const customButtons = [
   [
-    { text: 'Upscale (2x)', callback_data: 'Upscale (2x)' },
-    { text: 'Upscale (4x)', callback_data: 'Upscale (4x)' },
+    { text: 'Upscale (2x)', callback_data: 'upscale_2x' },
+    { text: 'Upscale (4x)', callback_data: 'upscale_4x' },
   ],
   [
-    //{ text: 'Vary (Subtle)', callback_data: 'Vary (Subtle)' },
-    { text: 'Vary (Strong)', callback_data: 'Vary (Strong)' },
-    //{ text: 'Vary (Region)', callback_data: 'Vary (Region)' },
+    { text: 'Vary (Subtle)', callback_data: 'low_variation' },
+    { text: 'Vary (Strong)', callback_data: 'high_variation' },
   ],
   [
-    { text: 'Zoom Out 2x', callback_data: 'Zoom Out 2x' },
-    { text: 'Zoom Out 1.5x', callback_data: 'Zoom Out 1.5x' },
-    { text: 'Custom Zoom', callback_data: 'Custom Zoom' },
+    { text: 'Zoom Out 2x', callback_data: 'outpaint_2x' },
+    { text: 'Zoom Out 1.5x', callback_data: 'outpaint_1.5x' },
+    { text: 'Custom Zoom', callback_data: 'outpaint_custom' },
+  ],
+  [
+    { text: '⬅️', callback_data: 'pan_left' },
+    { text: '➡️', callback_data: 'pan_right' },
+    { text: '⬆️', callback_data: 'pan_up' },
+    { text: '⬇️', callback_data: 'pan_down' }
   ],
 ];
-export const labels = [
-  'U1', 'U2', 'U3', 'U4',
-  'V1', 'V2', 'V3', 'V4',
-  '🔄',
-  'Upscale (2x)', 'Upscale (4x)',
-  'Vary (Subtle)', 'Vary (Strong)', 'Vary (Region)',
-  'Zoom Out 2x', 'Zoom Out 1.5x', 'Custom Zoom',
-  '⬅️', '➡️', '⬆️', '⬇️',
+export const buttons = [
+  'upscale1', 'upscale2', 'upscale3', 'upscale4',
+  'variation1', 'variation2', 'variation3', 'variation4',
+  'reroll',
+  
+  'high_variation', 'low_variation',
+  'outpaint_1.5x', 'outpaint_2x', 'outpaint_custom',
+  'pan_down', 'pan_left', 'pan_right', 'pan_up',
+  'upscale_2x', 'upscale_4x'
 ];
 
 export const buttonArray = [
@@ -98,7 +105,7 @@ export const buttonArray = [
   [{ text: `Добавить слово`, callback_data: 'add_word' }],
   [{ text: `Удалить слово`, callback_data: 'remove_word' }]
 ]
-export const buttons = [
+export const adminButtons = [
   'create_announcement',
   'remove_announcement',
   'remove_admin',
@@ -111,6 +118,6 @@ export const buttons = [
   'remove_word'
 ]
 
-export function moderation (prompt: string) {
-  return `Запрос ${prompt} не прошел модерацию`;
-}
+/* export function moderation (prompt: string) {
+  return ;
+} */

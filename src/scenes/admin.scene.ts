@@ -4,8 +4,8 @@ import { translate } from 'bing-translate-api';
 import * as fs from 'fs';
 
 export class Scene {
-  private dataId: Map<string, string> = new Map<string, string>();
-  private userId: Map<string, string> = new Map<string, string>();
+  private dataId: Map<number, string> = new Map<number, string>();
+  private userId: Map<number, number> = new Map<number, number>();
   private database: any
   private logger: any
   private reply: string = '*Введите ID пользователя*'
@@ -26,7 +26,7 @@ export class Scene {
         text: '',
         button: ''
       })
-      this.dataId.set(String(ctx.from?.id), data.id)
+      this.dataId.set(ctx.from?.id || 0, data.id)
       ctx.reply(`*Отправьте видео или фото размером не более 50мб*`, {
         reply_markup: {
           inline_keyboard: [
@@ -39,7 +39,7 @@ export class Scene {
     })
     scene.action('cancel', async (ctx) => {
       try {
-        const id = this.dataId.get(String(ctx.from?.id))
+        const id = this.dataId.get(ctx.from?.id ||0)
         ctx.reply(`*Отменено*`, { parse_mode: 'Markdown'})
         await this.database.delete('announcement', { id: id })
         ctx.scene.leave()
@@ -59,7 +59,7 @@ export class Scene {
 
         //media.push(fileUrl)
 
-        const id = this.dataId.get(String(ctx.from?.id))
+        const id = this.dataId.get(ctx.from?.id)
         await this.database.update('announcement', { id: id }, { media: fileUrl });
         ctx.scene.enter('get_text');
       } catch (error) {
@@ -74,7 +74,7 @@ export class Scene {
 
         //media.push(fileUrl)
 
-        const id = this.dataId.get(String(ctx.from?.id))
+        const id = this.dataId.get(ctx.from?.id)
         await this.database.update('announcement', { id: id }, { media: fileUrl });
         ctx.scene.enter('get_text');
       } catch (error) {
@@ -89,7 +89,7 @@ export class Scene {
 
         //media.push(fileUrl)
 
-        const id = this.dataId.get(String(ctx.from?.id))
+        const id = this.dataId.get(ctx.from?.id)
         await this.database.update('announcement', { id: id }, { media: fileUrl });
         ctx.scene.enter('get_text');
       } catch (error) {
@@ -152,7 +152,7 @@ export class Scene {
       try {
         const response = ctx.message.text
 
-        const id = this.dataId.get(String(ctx.from?.id))
+        const id = this.dataId.get(ctx.from?.id)
         await this.database.update('announcement', { id: id }, { text: response })
         ctx.scene.enter('get_button')
       } catch (error) {
@@ -204,7 +204,8 @@ export class Scene {
           }
           
           const users = await this.database.findMany('user');
-          const userIds = users.map((user: { userId: any }) => user.userId);
+          const userIds = users.map((user: { userId: number }) => user.userId);
+          //this.logger.log(userIds)
           const params: any = {
             caption: data.text,
             reply_markup: {
@@ -218,21 +219,21 @@ export class Scene {
             try {
               if (data.media) {
                 if (data.media.endsWith('.mp4')) {
-                  await ctx.telegram.sendVideo(userId, { url: data.media }, params);
+                  await ctx.telegram.sendVideo(Number(userId), { url: data.media }, params);
                 } else if (data.media.endsWith('.jpg') || data.media.endsWith('.jpeg') || data.media.endsWith('.png')) {
-                  await ctx.telegram.sendPhoto(userId, { url: data.media }, params);
+                  await ctx.telegram.sendPhoto(Number(userId), { url: data.media }, params);
                 }
               } else {
-                await ctx.telegram.sendMessage(userId, { text: data.text }, {
+                await ctx.telegram.sendMessage(Number(userId), { text: data.text }, {
                   reply_markup: {
                     inline_keyboard: buttonArrays,
                   },
                   parse_mode: 'Markdown',
                 });
               }
-              this.logger.info(`successfully sent message to user ${userId}`);
+              this.logger.info(`successfully sent message to user ${Number(userId)}`);
             } catch (error) {
-              this.logger.error(`error sending message to user ${userId}:`);
+              this.logger.error(`error sending message to user ${Number(userId)}:`);
               errorsCount++;
             }
           }
@@ -282,7 +283,7 @@ export class Scene {
     })
     scene.action('save_announcement', async (ctx) => {
       try {
-        const id = this.dataId.get(String(ctx.from?.id))
+        const id = this.dataId.get(ctx.from?.id || 0)
         ctx.reply(`*Обьявление сохранено используйте команду /post\nID: *\`${id}\``, { parse_mode: 'Markdown' })
         ctx.scene.leave()
       } catch (error) {
@@ -292,7 +293,7 @@ export class Scene {
     })
     scene.action('remove_announcement', async (ctx) => {
       try {
-        const id = this.dataId.get(String(ctx.from?.id))
+        const id = this.dataId.get(ctx.from?.id || 0)
         await this.database.delete('announcement', { id: id })
         ctx.reply(`*Обьявление удалено*`, {
           reply_markup: {
@@ -327,7 +328,7 @@ export class Scene {
     })
     scene.action('look_announcement', async (ctx) => {
       try {
-        const id = this.dataId.get(String(ctx.from?.id))
+        const id = this.dataId.get(ctx.from?.id || 0)
         //this.logger.log(id)
         const data = await this.database.findUnique('announcement', { id: id });
 
@@ -384,7 +385,7 @@ export class Scene {
       try {
         const response = ctx.message.text;
 
-        const id = this.dataId.get(String(ctx.from?.id))
+        const id = this.dataId.get(ctx.from?.id)
         await this.database.update('announcement', { id: id }, { button: response });
 
         ctx.reply(`*Обьявление собрано выберите действие*`, {
@@ -430,7 +431,7 @@ export class Scene {
         const response = ctx.message.text
 
         if (this.isNumber(response)) {
-          const id = String(response);
+          const id = Number(response);
           await this.database.update('user', { userId: id }, { admin: false })
           ctx.reply(`*ID:* \`${id}\` *права администратора удалены*`, { parse_mode: 'Markdown' })
           this.logger.info(`${id} no longer an administrator`)
@@ -472,8 +473,8 @@ export class Scene {
         const response = ctx.message.text
 
         if (this.isNumber(response)) {
-          const id = String(response);
-          await this.database.update('user', { userId: id }, { ban: true, banDate: `${Date.now()}` })
+          const id = Number(response);
+          await this.database.update('user', { userId: id }, { ban: true, banDate: Date.now() })
           ctx.reply(`*ID:* \`${id}\` *забанен*`, { parse_mode: 'Markdown' })
           this.logger.info(`${id} banned`)
           ctx.scene.leave()
@@ -514,8 +515,8 @@ export class Scene {
         const response = ctx.message.text
 
         if (this.isNumber(response)) {
-          const id = String(response);
-          await this.database.update('user', { userId: id }, { ban: false, banDate: '0' })
+          const id = Number(response);
+          await this.database.update('user', { userId: id }, { ban: false, banDate: 0 })
           ctx.reply(`*ID:* \`${id}\` *разбанен*`, { parse_mode: 'Markdown' })
           this.logger.info(`${id} unbanned`)
           ctx.scene.leave()
@@ -556,7 +557,7 @@ export class Scene {
         const response = ctx.message.text
 
         if (this.isNumber(response)) {
-          const id = String(response);
+          const id = Number(response);
           const user = await this.database.findUnique('user', { userId: id })
           ctx.reply(`
 *ID:* \`${user.userId}\`
@@ -566,7 +567,8 @@ export class Scene {
 Последний платеж: ${user.lastPay === 0 ? 'Пусто' : new Date(Number(user.lastPay)).toLocaleDateString()}
 Админ: ${user.admin ? 'Да' : 'Нет'}
 Забанен: ${user.ban ? 'Да' : 'Нет'}
-Дата блокировки: ${user.banDate === 0 ? 'Пусто' : new Date(Number(user.banDate)).toLocaleDateString()}*`, { parse_mode: 'Markdown' })
+Дата блокировки: ${user.banDate === 0 ? 'Пусто' : new Date(Number(user.banDate)).toLocaleDateString()}
+  *`, { parse_mode: 'Markdown' })
           this.logger.info(`${ctx.from.id} viewed user profile id: ${id}`)
           ctx.scene.leave()
         } else {
@@ -607,7 +609,7 @@ export class Scene {
 
         if (this.isNumber(response)) {
           const id = Number(response);
-          this.userId.set(String(ctx.from.id), String(id))
+          this.userId.set(ctx.from.id, id)
           ctx.scene.enter('give_requests_cb')
         } else {
           ctx.reply(this.notNumber, { parse_mode: 'Markdown' })
@@ -647,7 +649,7 @@ export class Scene {
 
         if (this.isNumber(response)) {
           const num = Number(response);
-          const id = this.userId.get(String(ctx.from?.id))
+          const id = this.userId.get(ctx.from?.id)
           ctx.reply(`*ID:* \`${id}\` *+${num} запросов*`, { parse_mode: 'Markdown' })
           const user = await this.database.findUnique('user', { userId: id })
           this.logger.info(`${id} +${num} requests`)
@@ -692,7 +694,7 @@ export class Scene {
 
         if (this.isNumber(response)) {
           const id = Number(response);
-          this.userId.set(String(ctx.from.id), String(id))
+          this.userId.set(ctx.from.id, id)
           ctx.scene.enter('take_away_requests_cb')
         } else {
           ctx.reply(this.notNumber, { parse_mode: 'Markdown' })
@@ -732,7 +734,7 @@ export class Scene {
 
         if (this.isNumber(response)) {
           const num = Number(response);
-          const id = this.userId.get(String(ctx.from?.id))
+          const id = this.userId.get(ctx.from?.id)
           ctx.reply(`*ID:* \`${id}\` *-${num} запросов*`, { parse_mode: 'Markdown' })
           this.logger.info(`${id} -${num} requests`)
 

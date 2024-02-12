@@ -14,7 +14,8 @@ import { Admin } from "./commands/admin.command";
 import { Scene } from "./scenes/admin.scene";
 import { Post } from "./commands/post.command";
 import { VipScene } from "./scenes/vip.scene";
-import LocalSession from "telegraf-session-local";
+//import LocalSession from "telegraf-session-local";
+import { Ratio } from "./commands/ratio.command";
 
 export class Bot {
   bot!: Telegraf<IBotContext>;
@@ -46,8 +47,8 @@ export class Bot {
       scene.remove_word(),
       vip.get_email()
     ], { ttl: 10 * 60 * 1000 });
-    //this.bot.use(session())
-    this.bot.use(new LocalSession({ database: 'session.json' }))
+    this.bot.use(session())
+    //this.bot.use(new LocalSession({ database: 'session.json' }))
     this.bot.use(stage.middleware());  
   }
   init () {
@@ -55,7 +56,7 @@ export class Bot {
       new Start(this.bot, this.config),
       new Vip(this.bot, this.config),
       new Profile(this.bot),
-
+      new Ratio(this.bot),
       new Post(this.bot),
       new Admin(this.bot)
     ]
@@ -78,7 +79,23 @@ export class Bot {
       {
         command: 'my_profile',
         description: 'Мой профиль'
-      }
+      },
+      {
+        command: 'ratio',
+        description: 'Смена соотношения сторон (1:1, 4:3, 16:9)'
+      },
+/*       {
+        command: 'ratio_1x1',
+        description: 'Генерация в соотношении 1:1'
+      },
+      {
+        command: 'ratio_4x3',
+        description: 'Генерация в соотношении 4:3'
+      },
+      {
+        command: 'ratio_16x9',
+        description: 'Генерация в соотношении 16:9'
+      } */
     ])
     this.bot.launch()
     this.logger.info('bot started')

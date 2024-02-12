@@ -3,7 +3,7 @@ import internal from "stream";
 import { Context, Scenes } from "telegraf";
 
 export interface SessionData {
-  data: any;
+  task_id: string;
 };
 export interface SceneData {
 

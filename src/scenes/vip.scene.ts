@@ -8,9 +8,9 @@ export class VipScene {
   private tokenAdd = 30;
   private tinkoff: tinkoffPAY;
 
-  private editMessageId: Map<string, number | null> = new Map<string, number | null>();
-  private paymentId: Map<string, string | null> = new Map<string, string | null>();
-  private paymentStatuse: Map<string, boolean | null> = new Map<string, boolean | null>();
+  private editMessageId: Map<number, number | null> = new Map<number, number | null>();
+  private paymentId: Map<number, string | null> = new Map<number, string | null>();
+  private paymentStatuse: Map<number, boolean | null> = new Map<number, boolean | null>();
   private database: any
   private logger: any
   private readonly config: any
@@ -48,7 +48,7 @@ export class VipScene {
     })
     scene.on('text', async (ctx) => {
       try {
-        const user = await this.database.findUnique('user', { userId: String(ctx.from?.id) });
+        const user = await this.database.findUnique('user', { userId: ctx.from?.id });
         if (!user) return;
         if (user.ban) return;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -58,27 +58,24 @@ export class VipScene {
           ctx.reply(`*Это не E-Mail*`, { parse_mode: 'Markdown' })
           return ctx.scene.reenter()
         }
-    
-        let numPay = user.lastPay / 1 + 1;
-        if (isNaN(numPay)) {
-          numPay =+ new Date();
-        }
+        
+        let numPay = Math.floor(Date.now() / 1000)
         const Amount = this.priceVIP * 100;
     
         this.tinkoff.createInvoice({
           Amount: Amount,
-          OrderId: `mj_01_${numPay}_${ctx.from?.id}`,
-          Description: "VIP-подписка PixelBin-бот.",
+          OrderId: `mj_01_${numPay}_${ctx.from.id}`,
+          Description: "VIP-подписка Midjourney-бот.",
         }, {
           Email: email,
           Taxation: "usn_income",
           Items: [
             {
-              Name: `mjoj${this.priceVIP}`,
+              Name: `Доступ к сервису Midjourney`,
               Quantity: 1,
               Price: Amount,
               Amount: Amount,
-              Tax: "vat20",
+              Tax: "none",
             },
           ]
         }).then(async (invoice: any) => {
@@ -99,18 +96,18 @@ export class VipScene {
             },
           });
     
-          this.editMessageId.set(user.userId, editMessage.message_id);
-          this.paymentId.set(user.userId, invoice.PaymentId);
-          this.paymentStatuse.set(user.userId, true);
+          this.editMessageId.set(ctx.from.id, editMessage.message_id);
+          this.paymentId.set(ctx.from.id, invoice.PaymentId);
+          this.paymentStatuse.set(ctx.from.id, true);
         }).catch((error) => this.logger.error(error));
       } catch (error) {
-        this.logger.error(error);
+        console.error(error);
         ctx.scene.leave();
       }
     })
     scene.action('i_paid', async (ctx) => {
       try {
-        const userId = String(ctx.from?.id);
+        const userId = ctx.from?.id;
         if (userId) {
           const editMessageId = this.editMessageId.get(userId);
           const paymentId = this.paymentId.get(userId);
@@ -125,7 +122,10 @@ export class VipScene {
     
             if (invoice.Status === 'CONFIRMED') {
               const user = await this.database.findUnique('user', { userId: userId });
-              await this.database.update('user', { userId: userId }, { subscribe: user.subscribe + vip.quantity, lastPay: `${Date.now()}` });
+              await this.database.update('user', { userId: userId }, {
+                subscribe: user.subscribe + vip.quantity,
+                lastPay: Date.now()
+              });
               ctx.reply('*Спасибо за подписку!*', { parse_mode: 'Markdown' });
               this.logger.info(`${userId} - https://t.me/${ctx.from?.username} bought a subscription`);
             } else {

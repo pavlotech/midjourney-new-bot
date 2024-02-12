@@ -40,9 +40,11 @@ export class Database {
       this.logger.error(error);
     }
   }
-  public async findMany (entity: string) {
+  public async findMany (entity: string, criteria: Record<string, any>) {
     try {
-      const result = await this.prisma[entity].findMany();
+      const result = await this.prisma[entity].findMany({
+        where: criteria
+      });
 
       return result;
     } catch (error) {

@@ -1,7 +1,7 @@
 import { Telegraf } from "telegraf";
 import { IBotContext } from "../context/context.interface";
 import { Command } from "./command.class";
-import { admin, buttonArray, buttons } from "../../settings";
+import { admin, adminButtons, buttonArray } from "../../settings";
 
 export class Admin extends Command {
   constructor (bot: Telegraf<IBotContext>) {
@@ -11,7 +11,7 @@ export class Admin extends Command {
     this.bot.command('admin_panel', async (ctx) => {
       try {
         logger.info(`${ctx.from?.id} - https://t.me/${ctx.from?.username} use /admin_panel`)
-        const user = await database.findUnique('user', { userId: String(ctx.from?.id) })
+        const user = await database.findUnique('user', { userId: ctx.from?.id })
         if (!user || user.ban) return;
         if (!user.admin) return logger.warn(`${ctx.from?.id} - https://t.me/${ctx.from?.username} tried to log into the admin panel`)
 
@@ -25,9 +25,9 @@ export class Admin extends Command {
         logger.error(error);
       }
     })
-    buttons.forEach(button => { this.bot.action(button, async (ctx) => {
+    adminButtons.forEach(button => { this.bot.action(button, async (ctx) => {
       try {
-        const user = await database.findUnique('user', { userId: String(ctx.from?.id) })
+        const user = await database.findUnique('user', { userId: ctx.from?.id })
         if (!user.admin) return logger.warn(`${ctx.from?.id} - https://t.me/${ctx.from?.username} tried using the admin panel`)
 
         ctx.scene.enter(button);
@@ -37,7 +37,7 @@ export class Admin extends Command {
     })});
     this.bot.action('add_admin', async (ctx) => {
       try {
-        const user = await database.findUnique('user', { userId: String(ctx.from?.id) })
+        const user = await database.findUnique('user', { userId: ctx.from?.id })
         if (!user.admin) return logger.warn(`${ctx.from?.id} - https://t.me/${ctx.from?.username} tried using the admin panel`)
 
         const password = generatePassword(30)
