@@ -26,8 +26,6 @@
     "axios": "^1.6.7",
     "bing-translate-api": "^3.0.0",
     "dotenv": "^16.3.1",
-    "midjourney": "^4.3.13",
-    "midjourney-client": "^1.0.8",
     "node-fetch": "^2.7.0",
     "nodemon": "^3.0.2",
     "telegraf": "^4.15.3",
