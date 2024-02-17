@@ -16,6 +16,10 @@ import { Post } from "./commands/post.command";
 import { VipScene } from "./scenes/vip.scene";
 //import LocalSession from "telegraf-session-local";
 import { Ratio } from "./commands/ratio.command";
+import Server from "./types/server.class";
+import { Blend } from "./scenes/blend.scene";
+import { BlendDescribe } from "./commands/blend.describe.command";
+import { Describe } from "./scenes/describe.scene";
 
 export class Bot {
   bot!: Telegraf<IBotContext>;
@@ -29,6 +33,8 @@ export class Bot {
     this.bot = new Telegraf<IBotContext>(this.config.get('TOKEN'), { handlerTimeout: 60 * 60 * 1000 })
     const scene = new Scene(this.database, this.logger);
     const vip = new VipScene(this.database, this.logger, this.config)
+    const blend = new Blend(this.database, this.logger, this.config)
+    const describe = new Describe(this.database, this.logger, this.config)
     const stage = new Scenes.Stage<ISceneContext>([
       scene.create_announcement(),
       scene.remove_announcement(),
@@ -45,20 +51,26 @@ export class Bot {
       scene.take_away_requests_cb(),
       scene.add_word(),
       scene.remove_word(),
-      vip.get_email()
+      vip.get_email(),
+      blend.first_photo(),
+      blend.second_photo(),
+      describe.get_photo(),
+      describe.get_text()
     ], { ttl: 10 * 60 * 1000 });
     this.bot.use(session())
     //this.bot.use(new LocalSession({ database: 'session.json' }))
     this.bot.use(stage.middleware());  
   }
   init () {
+    new Server(this.logger, this.config).init();
     this.commands = [
       new Start(this.bot, this.config),
       new Vip(this.bot, this.config),
       new Profile(this.bot),
       new Ratio(this.bot),
       new Post(this.bot),
-      new Admin(this.bot)
+      new Admin(this.bot),
+      new BlendDescribe(this.bot)
     ]
     for (const command of this.commands) command.handle(this.logger, this.database);
 
@@ -84,18 +96,14 @@ export class Bot {
         command: 'ratio',
         description: 'Смена соотношения сторон (1:1, 4:3, 16:9)'
       },
-/*       {
-        command: 'ratio_1x1',
-        description: 'Генерация в соотношении 1:1'
+      {
+        command: 'blend',
+        description: 'Генерация на основе двух изображений'
       },
       {
-        command: 'ratio_4x3',
-        description: 'Генерация в соотношении 4:3'
+        command: 'describe',
+        description: 'Генерация фото + текст'
       },
-      {
-        command: 'ratio_16x9',
-        description: 'Генерация в соотношении 16:9'
-      } */
     ])
     this.bot.launch()
     this.logger.info('bot started')

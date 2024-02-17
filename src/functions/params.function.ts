@@ -10,7 +10,7 @@ export const generationParams = (task_id: string, button: string, user: any) => 
   ];
   const generationType = buttonsToUse.includes(button) ? generationButtons : customButtons;
 
-  switch(button) {
+  switch (button) {
     case 'upscale1':
     case 'upscale2':
     case 'upscale3':

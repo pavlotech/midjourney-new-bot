@@ -1,33 +1,18 @@
-import { Telegraf, TelegramError } from "telegraf";
+import { Telegraf } from "telegraf";
 import { Event } from "../events/event.class";
 import { IBotContext } from "../context/context.interface";
 import { IConfigService } from "../config/config.interface";
 import { translate } from 'bing-translate-api';
-import axios from "axios";
-import * as fs from 'fs';
 import { buttons, generationButtons, noRequest, waitRequest } from "../../settings";
 import { Generation } from "../types/generation.class";
 import { generationParams } from "../functions/params.function";
+import { checkAndCorrectHyphen, checkList } from "../functions/check.function";
 
 export class Photo extends Event {
   constructor(bot: Telegraf<IBotContext>, private readonly config: IConfigService) {
     super(bot);
   }
   handle (logger: any, database: any): void {
-    const checkList = (word: string) => {
-      const bannedWords = fs.readFileSync('banList.txt', 'utf-8').split('\r\n');
-      const regex = new RegExp(`\\b${word}\\b`, 'i');
-      for (const bannedWord of bannedWords) {
-        if (regex.test(bannedWord)) return true
-      }
-      return false;
-    }
-    const checkAndCorrectHyphen = (text: string) => {
-      if (text.includes('-') && !text.includes('--')) {
-        text = text.replace('-', '--');
-      }
-      return text;
-    }
     this.bot.on('text', async (ctx) => {
       try {
         const user = await database.findUnique('user', { userId: ctx.from.id })

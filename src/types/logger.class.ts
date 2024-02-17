@@ -23,6 +23,6 @@ export class Logger {
     Logger.message('WARN', message, '\x1b[33m'); // Желтый цвет для WARN
   }
   public error (error: any) {
-    Logger.message('ERROR', `${error.name}: ${error.message}\x1b[0m`, '\x1b[31m');
+    Logger.message('ERROR', error, '\x1b[31m');
   }
 }

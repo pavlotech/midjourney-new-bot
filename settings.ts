@@ -16,6 +16,14 @@ export const start = {
 Для просмотра тарифов жмите /vip*
   `
 }
+export const describe_blend = {
+  text: '*Напишите текст*',
+  photo: `*Отправьте фото*`,
+  first_photo: `*Отправьте первое фото*`,
+  second_photo: `*Отправьте второе фото*`,
+  waiting_time: `*Время ожидания истекло*`
+}
+export const photosDirectory = 'photos'
 export const errorMessage = `*Произошла ошибка попробуйте позже*`
 export const waitRequest = `*Дождитесь выполнения предыдущего запроса*`
 export const vip = {

@@ -8,7 +8,7 @@ export class Generation {
   private logger: any;
   private config: any;
 
-  constructor(database: any, logger: any, config: any) {
+  constructor (database: any, logger: any, config: any) {
     this.database = database;
     this.logger = logger;
     this.config = config;
