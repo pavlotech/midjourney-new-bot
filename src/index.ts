@@ -16,7 +16,7 @@ import { Post } from "./commands/post.command";
 import { VipScene } from "./scenes/vip.scene";
 //import LocalSession from "telegraf-session-local";
 import { Ratio } from "./commands/ratio.command";
-import Server from "./types/server.class";
+//import Server from "./types/server.class";
 import { Blend } from "./scenes/blend.scene";
 import { BlendDescribe } from "./commands/blend.describe.command";
 import { Describe } from "./scenes/describe.scene";
@@ -62,7 +62,7 @@ export class Bot {
     this.bot.use(stage.middleware());  
   }
   init () {
-    new Server(this.logger, this.config).init();
+    //new Server(this.logger, this.config).init();
     this.commands = [
       new Start(this.bot, this.config),
       new Vip(this.bot, this.config),

@@ -3,6 +3,9 @@ import { ISceneContext } from "../context/context.interface";
 import { Generation } from "../types/generation.class";
 import { describe_blend, generationButtons } from "../../settings";
 import { downloadAndSavePhoto } from "../functions/download.function";
+import { uploadImageToImgBB } from "../functions/upload.function";
+/* import fs from 'fs';
+import path from 'path'; */
 
 export class Blend {
   private config: any;
@@ -16,7 +19,7 @@ export class Blend {
     this.config = config;
   }
   public first_photo () {
-    const scene = new Scenes.BaseScene<ISceneContext>('first_photo');
+    const scene = new Scenes.BaseScene<ISceneContext>('blend_first_photo');
     let timeoutId: NodeJS.Timeout;
 
     scene.enter(async (ctx) => {
@@ -32,12 +35,10 @@ export class Blend {
         const photo = ctx.message?.photo;
         const fileId = photo[photo.length - 1].file_id;
         const fileUrl = (await ctx.telegram.getFileLink(fileId)).href;
+        const uploadResult = await uploadImageToImgBB(fileUrl, this.config.get('API_KEY'), this.logger);
 
-        const fileName = await downloadAndSavePhoto(fileUrl, fileId)
-        const publicUrl = `${this.config.get('URL')}/photos/${fileName}`;
-
-        this.urls.set(ctx.from.id, [ publicUrl ]);
-        ctx.scene.enter('second_photo')        
+        this.urls.set(ctx.from.id, [ uploadResult.data.url ]);
+        ctx.scene.enter('blend_second_photo')
       } catch (error) {
         this.logger.error(error)
         this.urls.delete(ctx.from.id)
@@ -47,7 +48,7 @@ export class Blend {
     return scene
   }
   public second_photo () {
-    const scene = new Scenes.BaseScene<ISceneContext>('second_photo');
+    const scene = new Scenes.BaseScene<ISceneContext>('blend_second_photo');
     let timeoutId: NodeJS.Timeout;
 
     scene.enter(async (ctx) => {
@@ -65,18 +66,19 @@ export class Blend {
         const photo = ctx.message?.photo;
         const fileId = photo[photo.length - 1].file_id;
         const fileUrl = (await ctx.telegram.getFileLink(fileId)).href;
-
-        const fileName = await downloadAndSavePhoto(fileUrl, fileId)
-        const publicUrl = `${this.config.get('URL')}/photos/${fileName}`;
+        
+        const uploadResult = await uploadImageToImgBB(fileUrl, this.config.get('API_KEY'), this.logger);
         const currentUrls = this.urls.get(ctx.from.id)
-        currentUrls?.push(publicUrl);
+        currentUrls?.push(uploadResult.data.url);
+
+        this.logger.log(currentUrls)
 
         await this.database.update('user', { userId: ctx.from.id }, {
           treatment: true
         })
         this.urls.delete(ctx.from.id)
         new Generation(this.database, this.logger, this.config).generation(ctx, user, 'blend', {
-          image_urls: currentUrls ,
+          image_urls: currentUrls,
           process_mode: "fast",
         }, generationButtons);
         ctx.scene.leave()

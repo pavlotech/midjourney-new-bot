@@ -15,7 +15,7 @@ export class BlendDescribe extends Command {
         if (user.subscribe <= 0) return ctx.reply(noRequest, { parse_mode: 'Markdown' })
         if (user.treatment) return ctx.reply(waitRequest, { parse_mode: 'Markdown' })
 
-        ctx.scene.enter('first_photo')
+        ctx.scene.enter('blend_first_photo')
       } catch (error) {
         logger.error(error);
       }
@@ -27,7 +27,7 @@ export class BlendDescribe extends Command {
         if (user.subscribe <= 0) return ctx.reply(noRequest, { parse_mode: 'Markdown' })
         if (user.treatment) return ctx.reply(waitRequest, { parse_mode: 'Markdown' })
 
-        ctx.scene.enter('get_photo')
+        ctx.scene.enter('describe_get_photo')
       } catch (error) {
         logger.error(error);
       } 

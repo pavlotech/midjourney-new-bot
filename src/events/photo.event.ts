@@ -19,16 +19,31 @@ export class Photo extends Event {
         if (!user || user.ban) return;
         if (user.subscribe <= 0) return ctx.reply(noRequest, { parse_mode: 'Markdown' })
         if (user.treatment) return ctx.reply(waitRequest, { parse_mode: 'Markdown' })
+    
+        let prompt = '';
+        let links = '';
 
-        const prompt = (await translate(checkAndCorrectHyphen(ctx.message.text), null, "en")).translation.toLowerCase();
-        if (checkList(prompt)) return ctx.reply(`*Запрос "${ctx.message.text}" не прошел модерацию*`, { parse_mode: 'Markdown' })
+        const linkRegex = /(?:https?|ftp):\/\/[^\s/$.?#].[^\s]*/gi;
+        const matches = ctx.message.text.matchAll(linkRegex);
+    
+        for (const match of matches) {
+          links += match[0].trim() + ' ';
+          ctx.message.text = ctx.message.text.replace(match[0], '').trim();
+        }
 
+        prompt = ctx.message.text.trim();
+        const processedPrompt = (await translate(checkAndCorrectHyphen(prompt), null, "en")).translation;
+        if (checkList(processedPrompt)) return ctx.reply(`*Запрос "${prompt}" не прошел модерацию*`, { parse_mode: 'Markdown' })
+    
         await database.update('user', { userId: ctx.from.id }, {
-          prompt: prompt,
+          prompt: processedPrompt,
           treatment: true
         })
+        const fullPrompt = `${links + (links ? '\n' : '')} ${processedPrompt}`;
+        //logger.log(fullPrompt)
+
         new Generation(database, logger, this.config).generation(ctx, user, 'imagine', {
-          prompt: prompt,
+          prompt: fullPrompt,
           aspect_ratio: user.ratio,
           process_mode: "fast"
         }, generationButtons);

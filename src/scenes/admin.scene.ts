@@ -125,7 +125,6 @@ export class Scene {
     scene.on('text', async (ctx) => {
       try {
         const response = ctx.message.text
-
         await this.database.delete('announcement', { id: response });
         ctx.reply(`*Обьявление удалено*`, {
           reply_markup: {
@@ -152,9 +151,9 @@ export class Scene {
     scene.on('text', async (ctx) => {
       try {
         const response = ctx.message.text
-
         const id = this.dataId.get(ctx.from?.id)
         await this.database.update('announcement', { id: id }, { text: response })
+        
         ctx.scene.enter('get_button')
       } catch (error) {
         this.logger.error(error)
@@ -187,7 +186,7 @@ export class Scene {
     scene.on('text', async (ctx) => {
       try {
         const response = ctx.message.text
-
+        ctx.scene.leave()
         new Announcement(this.database, this.logger).post(ctx, response)
       } catch (error) {
         this.logger.error(error)

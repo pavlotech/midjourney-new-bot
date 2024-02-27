@@ -32,11 +32,12 @@ export class Generation {
         const fetch = await this.request("fetch", {
           task_id: task_id,
         })
+        //this.logger.log(fetch)
         if (fetch.data.status !== "finished") {
           await new Promise((resolve) => setTimeout(resolve, 1000));
           return this.fetchData(ctx, task_id, counter + 1);
         }
-        return fetch.data;      
+        return fetch.data;
       } catch (error) {
         this.logger.error(error)
       }
@@ -55,9 +56,9 @@ export class Generation {
       fetchResult = fetch
       await ctx.replyWithPhoto(
         {
-          url: fetch.task_result.discord_image_url
+          url: fetch.task_result.image_url
         }, {
-          caption: `[Ссылка на изображение](${fetch.task_result.discord_image_url})`,
+          caption: `[Ссылка на изображение](${fetch.task_result.image_url})`,
           parse_mode: 'Markdown',
           reply_markup: {
             inline_keyboard: buttons

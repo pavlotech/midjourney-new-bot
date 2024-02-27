@@ -5,6 +5,7 @@ import { describe_blend, generationButtons } from "../../settings";
 import { downloadAndSavePhoto } from "../functions/download.function";
 import { checkAndCorrectHyphen, checkList } from "../functions/check.function";
 import { translate } from "bing-translate-api";
+import { uploadImageToImgBB } from "../functions/upload.function";
 
 export class Describe {
   private config: any;
@@ -18,7 +19,7 @@ export class Describe {
     this.config = config;
   }
   public get_photo () {
-    const scene = new Scenes.BaseScene<ISceneContext>('get_photo');
+    const scene = new Scenes.BaseScene<ISceneContext>('describe_get_photo');
     let timeoutId: NodeJS.Timeout;
 
     scene.enter(async (ctx) => {
@@ -34,12 +35,10 @@ export class Describe {
         const photo = ctx.message?.photo;
         const fileId = photo[photo.length - 1].file_id;
         const fileUrl = (await ctx.telegram.getFileLink(fileId)).href;
+        const uploadResult = await uploadImageToImgBB(fileUrl, this.config.get('API_KEY'), this.logger);
 
-        const fileName = await downloadAndSavePhoto(fileUrl, fileId)
-        const publicUrl = `${this.config.get('URL')}/photos/${fileName}`;
-
-        this.url.set(ctx.from.id, publicUrl)
-        ctx.scene.enter('get_text')
+        this.url.set(ctx.from.id, uploadResult.data.url)
+        ctx.scene.enter('describe_get_text')
       } catch (error) {
         this.logger.error(error)
         this.url.delete(ctx.from.id)
@@ -49,7 +48,7 @@ export class Describe {
     return scene
   }
   public get_text () {
-    const scene = new Scenes.BaseScene<ISceneContext>('get_text');
+    const scene = new Scenes.BaseScene<ISceneContext>('describe_get_text');
     let timeoutId: NodeJS.Timeout;
 
     scene.enter(async (ctx) => {
@@ -101,6 +100,8 @@ export class Describe {
 
         const url = this.url.get(ctx.from.id)
         this.url.delete(ctx.from.id)
+        
+
         new Generation(this.database, this.logger, this.config).generation(ctx, user, 'imagine', {
           prompt: `${url} ${prompt}`,
           process_mode: "fast",

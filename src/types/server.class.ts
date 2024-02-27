@@ -41,7 +41,7 @@ export default class Server {
     this.app = express();
     this.config = config;
     this.logger = logger;
-    this.port = this.config.get('PORT') || 4444;
+    this.port = this.config.get('PORT') || 1111;
     this.app.use(express.json());
     this.app.use('/photos', express.static(photosDirectory));
   }
