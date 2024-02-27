@@ -70,9 +70,7 @@ export class Blend {
         const uploadResult = await uploadImageToImgBB(fileUrl, this.config.get('API_KEY'), this.logger);
         const currentUrls = this.urls.get(ctx.from.id)
         currentUrls?.push(uploadResult.data.url);
-
-        this.logger.log(currentUrls)
-
+        
         await this.database.update('user', { userId: ctx.from.id }, {
           treatment: true
         })
